@@ -1,6 +1,6 @@
 variable "prefix" {
   type        = string
-  default     = "mcp"
+  default     = "demo"
   description = <<EOF
 Prefix for resources.
 Preferably 2-4 characters long without special characters, lowercase.

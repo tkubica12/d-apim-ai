@@ -8,6 +8,10 @@ resource "azapi_resource" "apim" {
   parent_id = azurerm_resource_group.main.id
   location  = azurerm_resource_group.main.location
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   body = {
     properties = {
       publisherName       = "Contoso"
@@ -20,6 +24,43 @@ resource "azapi_resource" "apim" {
       capacity = 1
     }
   }
+}
+
+# APIM Logger (Application Insights) via AzAPI
+resource "azapi_resource" "apim_logger_ai" {
+  type      = "Microsoft.ApiManagement/service/loggers@2024-05-01"
+  name      = "appinsights"
+  parent_id = azapi_resource.apim.id
+
+  body = {
+    properties = {
+      loggerType  = "applicationInsights"
+      description = "Application Insights logger with system-assigned identity"
+      resourceId  = azurerm_application_insights.main.id
+      credentials = {
+        connectionString = azurerm_application_insights.main.connection_string
+        identityClientId = "SystemAssigned"
+      }
+    }
+  }
+}
+
+# APIM External Cache (Redis Enterprise) via AzAPI
+resource "azapi_resource" "apim_cache_default" {
+  type      = "Microsoft.ApiManagement/service/caches@2024-06-01-preview"
+  name      = "default"
+  parent_id = azapi_resource.apim.id
+  body = {
+    properties = {
+      connectionString = local.redis_connection_string
+      description       = "External Redis Enterprise cache"
+      useFromLocation   = "default"
+    }
+  }
+}
+
+output "apim_logger_name" {
+  value = azapi_resource.apim_logger_ai.name
 }
 
 output "apim_name" {
