@@ -1,4 +1,4 @@
-name: BUILD mcp
+name: BUILD tool-mcp
 
 on:
   push:
