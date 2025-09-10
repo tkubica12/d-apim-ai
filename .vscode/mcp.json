@@ -1,0 +1,13 @@
+{
+	"servers": {
+		"sayhelloviaapi": {
+			"url": "https://apim-mcp-bgev.azure-api.net/mcp/mcp",
+			"type": "http"
+		},
+		"sayhelloviamcp": {
+			"url": "https://apim-mcp-bgev.azure-api.net/sayhellomcp",
+			"type": "http"
+		}
+	},
+	"inputs": []
+}
